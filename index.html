@@ -106,14 +106,13 @@
          const scaleUnitSelect = document.getElementById('scale-unit');
          
          
-         // Flags to prevent infinite event looping
-         let updatingReal = false;
-         let updatingScale = false;
+         // prevent infinite event looping
+         let isUpdating = false;
          
          // Calculate scale length from real length
          function calcScaleLength() {
          
-           if (updatingReal) // prevent loop
+           if (isUpdating) // prevent loop
            {
             return;
            }
@@ -145,9 +144,9 @@
            const scaleUnit = scaleUnitSelect.value;
            let scaleLength = scaleLengthCm / unitToCm[scaleUnit];
          
-           updatingScale = true;
+           isUpdating = true;
            scaleLengthInput.value = scaleLength ? scaleLength.toFixed(4) : '';
-           updatingScale = false;
+           isUpdating = false;
          }
          
          
@@ -155,7 +154,7 @@
          
          function calcRealLength() {
          
-           if (updatingScale)
+           if (isUpdating)
            {
             return;
            } // prevent loop
@@ -187,9 +186,9 @@
            const realUnit = realUnitSelect.value;
            let realLength = realLengthCm / unitToCm[realUnit];
          
-           updatingReal = true;
+           isUpdating = true;
            realLengthInput.value = realLength ? realLength.toFixed(4) : '';
-           updatingReal = false;
+           isUpdating = false;
          
          }
          
