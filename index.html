@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>Scale Conversion Calculator</title>
+      <style>
+         body {
+         font-family: Arial, sans-serif;
+         padding: 20px;
+         max-width: 400px;
+         }
+         table {
+         width: 100%;
+         border-collapse: collapse;
+         }
+         td {
+         padding: 8px;
+         vertical-align: middle;
+         }
+         input {
+         width: 80px;
+         padding: 4px;
+         }
+         select {
+         padding: 4px;
+         }
+         label {
+         font-weight: bold;
+         }
+         .unit-selector {
+         margin-left: 10px;
+         }
+         .input-wrapper {
+         display: flex;
+         align-items: center;
+         }
+      </style>
+   </head>
+   <body>
+      <h2>Scale Conversion Calculator</h2>
+      <table>
+         <tr>
+            <td><label for="scale-numerator">Scale Ratio:</label></td>
+            <td>
+               <div class="input-wrapper">
+                  <input type="number" id="scale-numerator" min="1" value="1"/> :
+                  <input type="number" id="scale-denominator" min="1" value="12"/>
+               </div>
+            </td>
+         </tr>
+         <tr>
+            <td><label for="real-length">Real Length:</label></td>
+            <td>
+               <div class="input-wrapper">
+                  <input type="number" id="real-length" min="0" value="1" step="any" />
+                  <select id="real-unit" class="unit-selector" aria-label="Real length unit">
+                     <option value="mm">mm</option>
+                     <option value="cm" selected>cm</option>
+                     <option value="m">meter</option>
+                     <option value="inch">inch</option>
+                     <option value="ft">feet</option>
+                  </select>
+               </div>
+            </td>
+         </tr>
+         <tr>
+            <td><label for="scale-length">Scale Length:</label></td>
+            <td>
+               <div class="input-wrapper">
+                  <input type="number" id="scale-length" min="0" step="any" />
+                  <select id="scale-unit" class="unit-selector" aria-label="Scale length unit">
+                     <option value="mm">mm</option>
+                     <option value="cm" selected>cm</option>
+                     <option value="m">meter</option>
+                     <option value="inch">inch</option>
+                     <option value="ft">feet</option>
+                  </select>
+               </div>
+            </td>
+         </tr>
+      </table>
+      <script>
+
+         // Units conversion factors to centimeters for consistent calculation internally
+         const unitToCm = {
+           mm: 0.1,
+           cm: 1,
+           m: 100,
+           inch: 2.54,
+           ft: 30.48,
+         };
+         
+         
+         // Elements
+         const scaleNumerator = document.getElementById('scale-numerator');
+         const scaleDenominator = document.getElementById('scale-denominator');
+         
+         const realLengthInput = document.getElementById('real-length');
+         const realUnitSelect = document.getElementById('real-unit');
+         
+         const scaleLengthInput = document.getElementById('scale-length');
+         const scaleUnitSelect = document.getElementById('scale-unit');
+         
+         
+         // Flags to prevent infinite event looping
+         let updatingReal = false;
+         let updatingScale = false;
+         
+         // Calculate scale length from real length
+         function calcScaleLength() {
+         
+           if (updatingReal) // prevent loop
+           {
+            return;
+           }
+         
+           const numerator = parseFloat(scaleNumerator.value);
+           const denominator = parseFloat(scaleDenominator.value);
+           if (!numerator || !denominator)
+           {
+            return;
+           }
+         
+           const realVal = parseFloat(realLengthInput.value);
+         
+           if (isNaN(realVal)) {
+             scaleLengthInput.value = '';
+             return;
+           }
+         
+           // Convert real length to cm
+           const realUnit = realUnitSelect.value;
+           const realLengthCm = realVal * unitToCm[realUnit];
+         
+         
+           // calculate scale length in cm according to ratio: real : scale = numerator : denominator
+           // scaleLength = realLength * denominator / numerator
+           let scaleLengthCm = realLengthCm * numerator/denominator;
+         
+           // convert scale length cm back to scale unit
+           const scaleUnit = scaleUnitSelect.value;
+           let scaleLength = scaleLengthCm / unitToCm[scaleUnit];
+         
+           updatingScale = true;
+           scaleLengthInput.value = scaleLength ? scaleLength.toFixed(4) : '';
+           updatingScale = false;
+         }
+         
+         
+         // Calculate real length from scale length
+         
+         function calcRealLength() {
+         
+           if (updatingScale)
+           {
+            return;
+           } // prevent loop
+         
+           const numerator = parseFloat(scaleNumerator.value);
+           const denominator = parseFloat(scaleDenominator.value);
+         
+           if (!numerator || !denominator)
+           {
+            return;
+           }
+         
+           const scaleVal = parseFloat(scaleLengthInput.value);
+         
+           if (isNaN(scaleVal)) {
+             realLengthInput.value = '';
+             return;
+           }
+         
+           // Convert scale length to cm
+           const scaleUnit = scaleUnitSelect.value;
+           const scaleLengthCm = scaleVal * unitToCm[scaleUnit];
+         
+           // calculate real length in cm according to ratio
+           // realLength = scaleLength * numerator / denominator
+           let realLengthCm = scaleLengthCm * denominator / numerator;
+         
+           // convert real length cm back to real unit
+           const realUnit = realUnitSelect.value;
+           let realLength = realLengthCm / unitToCm[realUnit];
+         
+           updatingReal = true;
+           realLengthInput.value = realLength ? realLength.toFixed(4) : '';
+           updatingReal = false;
+         
+         }
+         
+         
+         // Event listeners
+         
+         scaleNumerator.addEventListener('input', () => {
+           calcScaleLength();
+         });
+         scaleDenominator.addEventListener('input', () => {
+           calcScaleLength();
+         });
+         realLengthInput.addEventListener('input', () => {
+           calcScaleLength();
+         });
+         realUnitSelect.addEventListener('change', () => {
+           calcScaleLength();
+         });
+         scaleLengthInput.addEventListener('input', () => {
+           calcRealLength();
+         });
+         scaleUnitSelect.addEventListener('change', () => {
+           calcRealLength();
+         });
+         
+      </script>
+   </body>
+</html>
