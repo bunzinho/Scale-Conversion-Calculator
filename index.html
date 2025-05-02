@@ -8,12 +8,13 @@
    <style>
       body {
          font-family: Arial, sans-serif;
-         padding: 20px;
+         padding: 4px;
          max-width: 500px;
+         background-color: rgb(253, 245, 230);
       }
 
       input {
-         width: 100px;
+         width: 6em;
          padding: 4px;
          font-size: 18px;
          border-radius: 4px;
@@ -21,7 +22,7 @@
       }
 
       select {
-         width: 100px;
+         width: 6em;
          padding: 4px;
          font-size: 18px;
          border-radius: 4px;
@@ -51,7 +52,6 @@
 
       .container {
          padding: 10px;
-         background-color: rgb(248, 240, 232);
       }
    </style>
 </head>
@@ -157,7 +157,7 @@
             let scaleLength = scaleLengthCm / unitToCm[scaleUnit];
    
             isUpdating = true;
-            scaleLengthInput.value = scaleLength ? scaleLength.toFixed(3) : '';
+            scaleLengthInput.value = Math.round(scaleLength * 10000) / 10000;
             isUpdating = false;
          }
       }
@@ -199,7 +199,7 @@
             let realLength = realLengthCm / unitToCm[realUnit];
    
             isUpdating = true;
-            realLengthInput.value = realLength ? realLength.toFixed(3) : '';
+            realLengthInput.value = Math.round(realLength * 10000) / 10000;
             isUpdating = false;
          }
       }
