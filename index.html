@@ -1,60 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <title>Scale Conversion Calculator</title>
-      <style>
-         body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            max-width: 500px;
-         }
-         input {
-            width: 100px;
-            padding: 4px;
-            font-size: 18px;
-            border-radius: 4px;
-            border-width: thin;
-         }
-         select {
-            width: 100px;
-            padding: 4px;
-            font-size: 18px;
-            border-radius: 4px;
-            border-width: thin;
-            box-sizing: content-box;
-         }
-         label {
-            font-weight: bold;
-         }
-         .unit-selector {
-            margin-left: 10px;
-         }
-         .input-wrapper {
-            font-size: 16px;
-            font-weight: bold;
-         }
-         .row {
-            display: grid;
-            align-items: center;
-            grid-template-columns: 0.3fr 1fr;
-            padding: 0.32rem;
-         }
-         .container {
-            padding: 10px;
-            background-color: rgb(248, 240, 232);
-         }
-      </style>
-   </head>
-   <body>
-      <h2>Scale Conversion Calculator</h2>
+
+<head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <title>Scale Conversion Calculator</title>
+   <style>
+      body {
+         font-family: Arial, sans-serif;
+         padding: 20px;
+         max-width: 500px;
+      }
+
+      input {
+         width: 100px;
+         padding: 4px;
+         font-size: 18px;
+         border-radius: 4px;
+         border-width: thin;
+      }
+
+      select {
+         width: 100px;
+         padding: 4px;
+         font-size: 18px;
+         border-radius: 4px;
+         border-width: thin;
+         box-sizing: content-box;
+      }
+
+      label {
+         font-weight: bold;
+      }
+
+      .unit-selector {
+         margin-left: 10px;
+      }
+
+      .input-wrapper {
+         font-size: 16px;
+         font-weight: bold;
+      }
+
+      .row {
+         display: grid;
+         align-items: center;
+         grid-template-columns: 0.3fr 1fr;
+         padding: 0.32rem;
+      }
+
+      .container {
+         padding: 10px;
+         background-color: rgb(248, 240, 232);
+      }
+   </style>
+</head>
+
+<body>
+   <h2>Scale Conversion Calculator</h2>
    <div class="container">
       <div class="row">
          <label for="scale-numerator">Scale Ratio:</label>
          <div class="input-wrapper">
-            <input type="number" id="scale-numerator" min="1" value="1"/> :
-            <input type="number" id="scale-denominator" min="1" value="12"/>
+            <input type="number" id="scale-numerator" min="1" value="1" /> :
+            <input type="number" id="scale-denominator" min="1" value="12" />
          </div>
       </div>
       <div class="row">
@@ -86,125 +95,125 @@
          </div>
       </div>
    </div>
-      <script>
+   <script>
 
-         // Units conversion factors to centimeters for consistent calculation internally
-         const unitToCm = {
-           mm: 0.1,
-           cm: 1,
-           m: 100,
-           inch: 2.54,
-           ft: 30.48,
-           mile: 160934,
-         };
-         
-         
-         // Elements
-         const scaleNumerator = document.getElementById('scale-numerator');
-         const scaleDenominator = document.getElementById('scale-denominator');
-         
-         const realLengthInput = document.getElementById('real-length');
-         const realUnitSelect = document.getElementById('real-unit');
-         
-         const scaleLengthInput = document.getElementById('scale-length');
-         const scaleUnitSelect = document.getElementById('scale-unit');
-         
-         
-         // prevent infinite event looping
-         let isUpdating = false;
-         
-         // Calculate scale length from real length
-         function calcScaleLength() {
-         
-           if (isUpdating) // prevent loop
-           {
-            return;
-           }
-         
-           const numerator = parseFloat(scaleNumerator.value);
-           const denominator = parseFloat(scaleDenominator.value);
-           if (!numerator || !denominator)
-           {
-            return;
-           }
-         
-           const realVal = parseFloat(realLengthInput.value);
-         
-           if (isNaN(realVal)) {
-             scaleLengthInput.value = '';
-             return;
-           }
-         
-           // Convert real length to cm
-           const realUnit = realUnitSelect.value;
-           const realLengthCm = realVal * unitToCm[realUnit];
-         
-         
-           // calculate scale length in cm according to ratio: real : scale = numerator : denominator
-           // scaleLength = realLength * denominator / numerator
-           let scaleLengthCm = realLengthCm * numerator/denominator;
-         
-           // convert scale length cm back to scale unit
-           const scaleUnit = scaleUnitSelect.value;
-           let scaleLength = scaleLengthCm / unitToCm[scaleUnit];
-         
-           isUpdating = true;
-           scaleLengthInput.value = scaleLength ? scaleLength.toFixed(4) : '';
-           isUpdating = false;
+      // Units conversion factors to centimeters for consistent calculation internally
+      const unitToCm = {
+         mm: 0.1,
+         cm: 1,
+         m: 100,
+         inch: 2.54,
+         ft: 30.48,
+         mile: 160934,
+      };
+
+
+      // Elements
+      const scaleNumerator = document.getElementById('scale-numerator');
+      const scaleDenominator = document.getElementById('scale-denominator');
+
+      const realLengthInput = document.getElementById('real-length');
+      const realUnitSelect = document.getElementById('real-unit');
+
+      const scaleLengthInput = document.getElementById('scale-length');
+      const scaleUnitSelect = document.getElementById('scale-unit');
+
+
+      // prevent infinite event looping
+      let isUpdating = false;
+
+      // Calculate scale length from real length
+      function calcScaleLength()
+      {
+         let numerator, denominator;
+         if (!isUpdating)
+         {
+            numerator = parseFloat(scaleNumerator.value);
+            denominator = parseFloat(scaleDenominator.value);
          }
-         
-         
-         // Calculate real length from scale length
-         
-         function calcRealLength() {
-         
-           if (isUpdating)
-           {
-            return;
-           } // prevent loop
-         
-           const numerator = parseFloat(scaleNumerator.value);
-           const denominator = parseFloat(scaleDenominator.value);
-         
-           if (!numerator || !denominator)
-           {
-            return;
-           }
-         
-           const scaleVal = parseFloat(scaleLengthInput.value);
-         
-           if (isNaN(scaleVal)) {
-             realLengthInput.value = '';
-             return;
-           }
-         
-           // Convert scale length to cm
-           const scaleUnit = scaleUnitSelect.value;
-           const scaleLengthCm = scaleVal * unitToCm[scaleUnit];
-         
-           // calculate real length in cm according to ratio
-           // realLength = scaleLength * numerator / denominator
-           let realLengthCm = scaleLengthCm * denominator / numerator;
-         
-           // convert real length cm back to real unit
-           const realUnit = realUnitSelect.value;
-           let realLength = realLengthCm / unitToCm[realUnit];
-         
-           isUpdating = true;
-           realLengthInput.value = realLength ? realLength.toFixed(4) : '';
-           isUpdating = false;
-         
+
+         let scaleVal;
+         if (numerator && denominator)
+         {
+            scaleVal = realVal = parseFloat(realLengthInput.value);
          }
-         
-         
-         // Event listeners
-         scaleNumerator.addEventListener('input', calcScaleLength);
-         scaleDenominator.addEventListener('input', calcScaleLength);
-         realLengthInput.addEventListener('input', calcScaleLength);
-         realUnitSelect.addEventListener('change', calcScaleLength);
-         scaleLengthInput.addEventListener('input', calcRealLength);
-         scaleUnitSelect.addEventListener('change', calcRealLength);
-         
-      </script>
-   </body>
+
+         if (isNaN(realVal))
+         {
+            scaleLengthInput.value = '';
+         }
+         else
+         {
+            // Convert real length to cm
+            const realUnit = realUnitSelect.value;
+            const realLengthCm = realVal * unitToCm[realUnit];
+      
+            // calculate scale length in cm according to ratio: real : scale = numerator : denominator
+            // scaleLength = realLength * denominator / numerator
+            let scaleLengthCm = realLengthCm * numerator / denominator;
+   
+            // convert scale length cm back to scale unit
+            const scaleUnit = scaleUnitSelect.value;
+            let scaleLength = scaleLengthCm / unitToCm[scaleUnit];
+   
+            isUpdating = true;
+            scaleLengthInput.value = scaleLength ? scaleLength.toFixed(3) : '';
+            isUpdating = false;
+         }
+      }
+
+
+      // Calculate real length from scale length
+
+      function calcRealLength()
+      {
+         let numerator, denominator;
+         if (!isUpdating)
+         {
+            numerator = parseFloat(scaleNumerator.value);
+            denominator = parseFloat(scaleDenominator.value);
+         }
+
+         let scaleVal;
+         if (numerator && denominator)
+         {
+            scaleVal = parseFloat(scaleLengthInput.value);
+         }
+
+         if (isNaN(scaleVal))
+         {
+            realLengthInput.value = '';
+         }
+         else
+         {
+            // Convert scale length to cm
+            const scaleUnit = scaleUnitSelect.value;
+            const scaleLengthCm = scaleVal * unitToCm[scaleUnit];
+   
+            // calculate real length in cm according to ratio
+            // realLength = scaleLength * numerator / denominator
+            let realLengthCm = scaleLengthCm * denominator / numerator;
+   
+            // convert real length cm back to real unit
+            const realUnit = realUnitSelect.value;
+            let realLength = realLengthCm / unitToCm[realUnit];
+   
+            isUpdating = true;
+            realLengthInput.value = realLength ? realLength.toFixed(3) : '';
+            isUpdating = false;
+         }
+      }
+
+
+      // Event listeners
+      scaleNumerator.addEventListener('input', calcScaleLength);
+      scaleDenominator.addEventListener('input', calcScaleLength);
+      realLengthInput.addEventListener('input', calcScaleLength);
+      realUnitSelect.addEventListener('change', calcScaleLength);
+      scaleLengthInput.addEventListener('input', calcRealLength);
+      scaleUnitSelect.addEventListener('change', calcRealLength);
+
+   </script>
+</body>
+
 </html>
