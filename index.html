@@ -195,25 +195,12 @@
          
          
          // Event listeners
-         
-         scaleNumerator.addEventListener('input', () => {
-           calcScaleLength();
-         });
-         scaleDenominator.addEventListener('input', () => {
-           calcScaleLength();
-         });
-         realLengthInput.addEventListener('input', () => {
-           calcScaleLength();
-         });
-         realUnitSelect.addEventListener('change', () => {
-           calcScaleLength();
-         });
-         scaleLengthInput.addEventListener('input', () => {
-           calcRealLength();
-         });
-         scaleUnitSelect.addEventListener('change', () => {
-           calcRealLength();
-         });
+         scaleNumerator.addEventListener('input', calcScaleLength);
+         scaleDenominator.addEventListener('input', calcScaleLength);
+         realLengthInput.addEventListener('input', calcScaleLength);
+         realUnitSelect.addEventListener('change', calcScaleLength);
+         scaleLengthInput.addEventListener('input', calcRealLength);
+         scaleUnitSelect.addEventListener('change', calcRealLength);
          
       </script>
    </body>
