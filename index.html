@@ -34,10 +34,6 @@
          font-weight: bold;
       }
 
-      .unit-selector {
-         margin-left: 10px;
-      }
-
       .input-wrapper {
          font-size: 16px;
          font-weight: bold;
@@ -48,6 +44,7 @@
          align-items: center;
          grid-template-columns: 0.3fr 1fr;
          padding: 0.32rem;
+         width: 40em;
       }
 
       .container {
@@ -62,14 +59,14 @@
       <div class="row">
          <label for="scale-numerator">Scale Ratio:</label>
          <div class="input-wrapper">
-            <input type="number" id="scale-numerator" min="1" value="1" /> :
+            <input type="number" id="scale-numerator" min="1" value="1" />&nbsp;:&nbsp;
             <input type="number" id="scale-denominator" min="1" value="12" />
          </div>
       </div>
       <div class="row">
          <label for="real-length">Real Length:</label>
          <div class="input-wrapper">
-            <input type="number" id="real-length" min="0" value="1" step="any" />
+            <input type="number" id="real-length" min="0" value="1" step="any" />&nbsp;&nbsp;&nbsp;
             <select id="real-unit" class="unit-selector" aria-label="Real length unit">
                <option value="mm">mm</option>
                <option value="cm" selected>cm</option>
@@ -83,7 +80,7 @@
       <div class="row">
          <label for="scale-length">Scale Length:</label>
          <div class="input-wrapper">
-            <input type="number" id="scale-length" min="0" step="any" />
+            <input type="number" id="scale-length" min="0" step="any" />&nbsp;&nbsp;&nbsp;
             <select id="scale-unit" class="unit-selector" aria-label="Scale length unit">
                <option value="mm">mm</option>
                <option value="cm" selected>cm</option>
